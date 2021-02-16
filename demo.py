@@ -35,7 +35,7 @@ def get_data():
     return all_data
 
 
-def main(): 
+def main():
     all_data = get_data()
     save_data(all_data)
 
