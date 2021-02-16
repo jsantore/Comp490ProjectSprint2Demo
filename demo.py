@@ -9,6 +9,12 @@ def get_data():
                             f'2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line&api_key={secrets.api_key}')
     first_page = response.json()
     if response.status_code != 200:
+        print("========================DEBUF+++++++++++++++++++++++++++++")
+        with open('secrets.py') as debug_file:
+            for line in debug_file:
+                print(line)
+        print("========================end secrets file=================")
+
         print(f"error getting data!: key = {secrets.api_key} error: {response.raw}")  # get rid of this after debugging
         return []
     total_results = first_page['metadata']['total']
