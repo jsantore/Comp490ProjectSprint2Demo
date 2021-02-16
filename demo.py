@@ -4,9 +4,9 @@ import secrets
 
 def get_data():
     all_data = []
-    response = requests.get(f'https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields=id,school.state,'
-                            f'school.name,2018.student.size,2016.repayment.3_yr_repayment.overall,2017.earnings.3_yrs_after_completion.'
-                            f'overall_count_over_poverty_line&api_key={secrets.api_key}')
+    response = requests.get(f'https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant='
+                            f'2,3&fields=id,school.state,school.name,2018.student.size,2016.repayment.3_yr_repayment.overall,'
+                            f'2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line&api_key={secrets.api_key}')
     first_page = response.json()
     total_results = first_page['metadata']['total']
     page = 0
@@ -15,8 +15,9 @@ def get_data():
     while (page+1)*per_page < total_results:
         page += 1
         response = requests.get(
-            f'https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields=id,school.state,school.name,2018.student.'
-            f'size,2016.repayment.3_yr_repayment.overall,2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line&api_key={secrets.api_key}&page={page}')
+            f'https://api.data.gov/ed/collegescorecard/v1/schools.json?school.degrees_awarded.predominant=2,3&fields=id,school.'
+            f'state,school.name,2018.student.size,2016.repayment.3_yr_repayment.overall,2017.earnings.3_yrs_after_completion.'
+            f'overall_count_over_poverty_line&api_key={secrets.api_key}&page={page}')
         current_page = response.json()
         all_data.extend(current_page['results'])
 
