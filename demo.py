@@ -10,10 +10,6 @@ def get_data():
     first_page = response.json()
     if response.status_code != 200:
         print("========================DEBUG+++++++++++++++++++++++++++++")
-        with open('bare.py') as debug_file2:
-            lines = debug_file2.readlines()
-            for line in lines:
-                print(line)
         with open('secrets.py') as debug_file:
             for line in debug_file:
                 print(line)
