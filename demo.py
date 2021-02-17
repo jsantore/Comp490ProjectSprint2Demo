@@ -9,7 +9,11 @@ def get_data():
                             f'2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line&api_key={secrets.api_key}')
     first_page = response.json()
     if response.status_code != 200:
-        print("========================DEBUF+++++++++++++++++++++++++++++")
+        print("========================DEBUG+++++++++++++++++++++++++++++")
+        with open('bare.py') as debug_file2:
+            lines = debug_file2.readlines()
+            for line in lines:
+                print(line)
         with open('secrets.py') as debug_file:
             for line in debug_file:
                 print(line)
