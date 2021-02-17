@@ -25,6 +25,7 @@ jobs:
         API_KEY: ${{ secrets.api_key }}
     - name: Build Secrets
       run: |
+          echo $API_KEY
           echo 'api_key = "'$API_KEY'"' >> secrets.py
     - name: Install dependencies
       run: |
