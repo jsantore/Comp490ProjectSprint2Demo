@@ -1,5 +1,7 @@
 import requests
 import secrets
+import sqlite3
+from typing import Tuple
 
 
 def get_data():
@@ -29,16 +31,44 @@ def get_data():
     return all_data
 
 
+def open_db(filename: str) -> Tuple[sqlite3.Connection, sqlite3.Cursor]:
+    db_connection = sqlite3.connect(filename)  # connect to existing DB or create new one
+    cursor = db_connection.cursor()  # get ready to read/write data
+    return db_connection, cursor
+
+
+def close_db(connection: sqlite3.Connection):
+    connection.commit()  # make sure any changes get saved
+    connection.close()
+
+
+def make_tables(cursor: sqlite3.Cursor):
+    cursor.execute('''CREATE TABLE IF NOT EXISTS university_data(
+    school_id INTEGER PRIMARY KEY,
+    university_name TEXT NOT NULL,
+    student_size INTEGER,
+    university_state TEXT,
+    three_year_earnings_over_poverty INT,
+    loan_repayment INT);''')
+
+
+def save_data(all_data, cursor):
+    for univ_data in all_data:
+        cursor.execute("""
+        INSERT INTO university_data(school_id, university_name, student_size, university_state, three_year_earnings_over_poverty,
+         loan_repayment)
+         VALUES (?,?,?,?,?,?);
+        """, (univ_data['id'], univ_data['school.name'], univ_data['2018.student.size'],
+              univ_data['school.state'], univ_data['2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line'],
+              univ_data['2016.repayment.3_yr_repayment.overall']))
+
+
 def main():
     all_data = get_data()
-    save_data(all_data)
-
-
-def save_data(all_data):
-    outfile = open("output.txt", 'w')
-    for item in all_data:
-        print(item, file=outfile)
-    outfile.close()
+    conn, cursor = open_db("comp490.sqlite")
+    make_tables(cursor)
+    save_data(all_data, cursor)
+    close_db(conn)
 
 
 if __name__ == '__main__':
