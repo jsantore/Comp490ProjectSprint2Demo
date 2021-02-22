@@ -18,10 +18,10 @@ def test_data_save():
     # test data is saved - now lets see if it is there
     conn, cursor = demo.open_db('testdb.sqlite')
     # the sqlite_master table is a metadata table with information about all the tables in it
-    cursor.execute('''SELECT name FROM sqlite_master 
+    cursor.execute('''SELECT name FROM sqlite_master
     WHERE type ='table' AND name LIKE 'university_%';''')  # like does pattern matching with % as the wildcard
     results = cursor.fetchall()
-    assert len(results) ==1
+    assert len(results) == 1
     cursor.execute(''' SELECT university_name FROM university_data''')
     results = cursor.fetchall()
     test_record = results[0]
