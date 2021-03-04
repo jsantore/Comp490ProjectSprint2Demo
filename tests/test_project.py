@@ -1,4 +1,11 @@
 import demo
+import pytest
+
+
+@pytest.fixture
+def get_db():
+    conn, cursor = demo.open_db('testdb.sqlite')
+    return conn, cursor
 
 
 def test_get_data():
@@ -6,9 +13,9 @@ def test_get_data():
     assert len(data) > 3000
 
 
-def test_data_save():
+def test_data_save(get_db):
     # first lets add test data
-    conn, cursor = demo.open_db('testdb.sqlite')
+    conn, cursor = get_db
     demo.make_tables(cursor)
     test_data = [{'school.name': 'Test University', '2018.student.size': 1000, 'school.state': 'MA', 'id': 11001,
                   '2017.earnings.3_yrs_after_completion.overall_count_over_poverty_line': 456,
